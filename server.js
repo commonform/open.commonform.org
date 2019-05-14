@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 var handler = require('./')
 var http = require('http')
 var pino = require('pino')
