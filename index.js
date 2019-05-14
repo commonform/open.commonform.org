@@ -13,14 +13,14 @@ module.exports = function (request, response) {
     /* istanbul ignore if */
     if (error) return serverError(error)
 
-    // Parse JSON.
-    try {
-      var parsedRequest = JSON.parse(body)
-    } catch (error) {
-      return clientError('invalid json')
-    }
-
     if (request.method === 'POST') {
+      // Parse JSON.
+      try {
+        var parsedRequest = JSON.parse(body)
+      } catch (error) {
+        return clientError('invalid json')
+      }
+
       // Route request.
       if (validRenderRequest(parsedRequest)) {
         return handleRender(parsedRequest, response)
