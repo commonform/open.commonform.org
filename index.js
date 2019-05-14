@@ -89,6 +89,7 @@ module.exports = function (request, response) {
       try {
         var rendered = renderer(form, blanks, options)
       } catch (error) {
+        /* istanbul ignore next */
         return serverError(error)
       }
       response.statusCode = 200
@@ -102,6 +103,7 @@ module.exports = function (request, response) {
       try {
         var results = lint(form)
       } catch (error) {
+        /* istanbul ignore next */
         return serverError(error)
       }
       response.statusCode = 200
