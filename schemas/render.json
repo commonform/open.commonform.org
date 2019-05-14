@@ -35,6 +35,19 @@
         "outline"
       ]
     },
+    "directions": {
+      "type": "array"
+    },
+    "blanks": {
+      "oneOf": [
+        {
+          "type": "object"
+        },
+        {
+          "type": "array"
+        }
+      ]
+    },
     "styles": {
       "type": "object"
     },

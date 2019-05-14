@@ -149,6 +149,27 @@ tape('DOCX', function (test) {
   })
 })
 
+tape('DOCX with blanks', function (test) {
+  withTestServer(function (port, close) {
+    http.request({ port, method: 'POST' })
+      .once('response', function (response) {
+        test.equal(response.statusCode, 200, '200')
+        close()
+        test.end()
+      })
+      .end(JSON.stringify({
+        action: 'render',
+        title: 'Test Form',
+        format: 'docx',
+        blanks: { dollars: '$5' },
+        form: {
+          format: 'markup',
+          data: 'The purchase price is [dollars].'
+        }
+      }))
+  })
+})
+
 tape('invalid JSON', function (test) {
   withTestServer(function (port, close) {
     http.request({ port, method: 'POST' })

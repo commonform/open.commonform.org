@@ -38,19 +38,43 @@ module.exports = function (request, response) {
   })
 
   function handleRender (request, response) {
-    parseForm(request, function (error, form) {
+    parseForm(request, function (error, form, directions) {
       if (error) return clientError(error)
+      // Validate renderer.
       var renderer = renderers[request.format]
       /* istanbul ignore next */
       if (!renderer) return clientError('unknown format')
-      var blanks = []
+
+      // Compile rendering options.
       var options = {}
-      var optionKeys = [
+      var passthroughOptionKeys = [
         'title', 'edition', 'hash', 'markFilled', 'styles'
       ]
-      optionKeys.forEach(function (key) {
+      passthroughOptionKeys.forEach(function (key) {
         if (request[key]) options[key] = request[key]
       })
+
+      // Process blanks.
+      if (request.directions) directions = request.directions
+      var blanks = request.blanks || []
+      if (directions && !Array.isArray(blanks)) {
+        blanks = Object.keys(blanks).reduce(function (output, key) {
+          var value = blanks[key]
+          directions
+            .filter(function (direction) {
+              return direction.identifier === key
+            })
+            .forEach(function (direction) {
+              output.push({
+                blank: direction.path,
+                value: value
+              })
+            })
+          return output
+        }, [])
+      }
+
+      // Process numbering.
       var numbering = request.numbering
       if (numbering) {
         if (!numberings.hasOwnProperty(numbering)) {
@@ -60,6 +84,8 @@ module.exports = function (request, response) {
       } else {
         options.numbering = numberings.default
       }
+
+      // Render.
       try {
         var rendered = renderer(form, blanks, options)
       } catch (error) {
@@ -84,23 +110,22 @@ module.exports = function (request, response) {
   }
 
   function parseForm (request, callback) {
-    var form
     var formData = request.form.data
     /* istanbul ignore else */
     if (request.form.format === 'json') {
       try {
-        form = JSON.parse(formData)
+        var form = JSON.parse(formData)
       } catch (error) {
         return callback(new Error('invalid form JSON'))
       }
       return callback(null, form)
     } else if (request.form.format === 'markup') {
       try {
-        form = parseMarkup(formData).form
+        var parsed = parseMarkup(formData)
       } catch (error) {
         return callback(new Error('invalid form markup'))
       }
-      return callback(null, form)
+      return callback(null, parsed.form, parsed.directions)
     }
   }
 
