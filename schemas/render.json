@@ -1,0 +1,40 @@
+{
+  "type": "object",
+  "properties": {
+    "action": {
+      "const": "render"
+    },
+    "format": {
+      "enum": [
+        "html",
+        "html5",
+        "markdown"
+      ]
+    },
+    "form": {
+      "title": "form data",
+      "type": "object",
+      "properties": {
+        "format": {
+          "title": "form data format",
+          "enum": [
+            "markup",
+            "json"
+          ]
+        },
+        "data": {
+          "title": "form data",
+          "type": "string"
+        }
+      }
+    },
+    "title": {
+      "title": "optional document title",
+      "type": "string"
+    }
+  },
+  "required": [
+    "action",
+    "form"
+  ]
+}

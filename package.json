@@ -1,0 +1,28 @@
+{
+  "private": true,
+  "repository": "commonform/open.commonform.org",
+  "license": "BlueOak-1.0.0",
+  "dependencies": {
+    "ajv": "^6.10.0",
+    "commonform-docx": "^1.4.0",
+    "commonform-html": "^2.0.0",
+    "commonform-markdown": "^1.2.3",
+    "commonform-markup-parse": "^0.4.2",
+    "commonform-validate": "^1.0.1",
+    "ooxml-signature-pages": "^2.0.1",
+    "pino": "^5.12.3",
+    "pino-http": "^4.2.0",
+    "simple-concat": "^1.0.0"
+  },
+  "devDependencies": {
+    "nyc": "^14.1.1",
+    "standard": "^12.0.1",
+    "tape": "^4.10.1"
+  },
+  "scripts": {
+    "lint": "standard",
+    "format": "standard --fix",
+    "coverage": "nyc --reporter=lcov --reporter=text-summary npm run test",
+    "test": "tape test/**.test.js"
+  }
+}
