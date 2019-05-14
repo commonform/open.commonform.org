@@ -1,18 +1,20 @@
 var AJV = require('ajv')
+var concat = require('./concat')
 var lint = require('commonform-lint')
 var numberings = require('./numberings')
 var parseMarkup = require('commonform-markup-parse')
 var renderers = require('./renderers')
-var simpleConcat = require('simple-concat')
 
 var ajv = new AJV()
 var validRenderRequest = ajv.compile(require('./requests/render.schema.json'))
 var validLintRequest = ajv.compile(require('./requests/lint.schema.json'))
 
+var POST_BODY_LIMIT = process.env.POST_BODY_LIMIT || 500000
+
 module.exports = function (request, response) {
   if (request.method === 'POST') {
     // Parse JSON request body and route to handler.
-    simpleConcat(request, function (error, body) {
+    concat(request, POST_BODY_LIMIT, function (error, body) {
       /* istanbul ignore if */
       if (error) return serverError(error)
 
