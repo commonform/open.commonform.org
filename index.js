@@ -11,6 +11,7 @@ var validLintRequest = ajv.compile(require('./requests/lint.schema.json'))
 
 module.exports = function (request, response) {
   if (request.method === 'POST') {
+    // Parse JSON request body and route to handler.
     simpleConcat(request, function (error, body) {
       /* istanbul ignore if */
       if (error) return serverError(error)
@@ -32,15 +33,18 @@ module.exports = function (request, response) {
       }
     })
   } else {
+    // Redirect to GitHub repository.
     response.statusCode = 302
     var repo = 'https://github.com/commonform/open.commonform.org'
     response.setHeader('Location', repo)
     response.end()
   }
 
+  // Handler form render requests.
   function handleRender (request, response) {
     parseForm(request, function (error, form, directions) {
       if (error) return clientError(error)
+
       // Validate renderer.
       var renderer = renderers[request.format]
       /* istanbul ignore next */
@@ -98,6 +102,7 @@ module.exports = function (request, response) {
     })
   }
 
+  // Handle lint requests.
   function handleLint (request, response) {
     parseForm(request, function (error, form) {
       if (error) return clientError(error)
