@@ -20,13 +20,19 @@ module.exports = function (request, response) {
       return clientError('invalid json')
     }
 
-    // Route request.
-    if (validRenderRequest(parsedRequest)) {
-      return handleRender(parsedRequest, response)
-    } else if (validLintRequest(parsedRequest)) {
-      return handleLint(parsedRequest, response)
+    if (request.method === 'POST') {
+      // Route request.
+      if (validRenderRequest(parsedRequest)) {
+        return handleRender(parsedRequest, response)
+      } else if (validLintRequest(parsedRequest)) {
+        return handleLint(parsedRequest, response)
+      } else {
+        return clientError('invalid request')
+      }
     } else {
-      return clientError('invalid request')
+      response.statusCode = 302
+      response.setHeader('Location', 'https://github.com/commonform/open.commonform.org')
+      response.end()
     }
   })
 
