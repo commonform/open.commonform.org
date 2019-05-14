@@ -6,8 +6,8 @@ var renderers = require('./renderers')
 var simpleConcat = require('simple-concat')
 
 var ajv = new AJV()
-var validRenderRequest = ajv.compile(require('./requests/render.json'))
-var validLintRequest = ajv.compile(require('./requests/lint.json'))
+var validRenderRequest = ajv.compile(require('./requests/render.schema.json'))
+var validLintRequest = ajv.compile(require('./requests/lint.schema.json'))
 
 module.exports = function (request, response) {
   simpleConcat(request, function (error, body) {
