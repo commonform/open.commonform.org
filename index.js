@@ -19,20 +19,24 @@ module.exports = function (request, response) {
     }
 
     // Validate request.
-    if (!validRenderRequest(parsedRequest)) {
-      return clientError('invalid request')
+    if (validRenderRequest(parsedRequest)) {
+      return render(parsedRequest, response)
     }
+    return clientError('invalid request')
+  })
+
+  function render (request, response) {
     // Parse form.
     var form
-    var formData = parsedRequest.form.data
+    var formData = request.form.data
     /* istanbul ignore else */
-    if (parsedRequest.form.format === 'json') {
+    if (request.form.format === 'json') {
       try {
         form = JSON.parse(formData)
       } catch (error) {
         return clientError('invalid form JSON')
       }
-    } else if (parsedRequest.form.format === 'markup') {
+    } else if (request.form.format === 'markup') {
       try {
         form = parseMarkup(formData).form
       } catch (error) {
@@ -41,14 +45,14 @@ module.exports = function (request, response) {
     }
 
     // Render form.
-    var renderer = renderers[parsedRequest.format]
+    var renderer = renderers[request.format]
     /* istanbul ignore next */
     if (!renderer) return clientError('unknown format')
     var rendered = renderer(form)
 
     response.statusCode = 200
     response.end(rendered)
-  })
+  }
 
   /* istanbul ignore next */
   function serverError (error) {
