@@ -1,5 +1,6 @@
 var AJV = require('ajv')
 var concat = require('./concat')
+var critique = require('commonform-critique')
 var lint = require('commonform-lint')
 var numberings = require('./numberings')
 var parseMarkup = require('commonform-markup-parse')
@@ -8,6 +9,7 @@ var renderers = require('./renderers')
 var ajv = new AJV()
 var validRenderRequest = ajv.compile(require('./requests/render.schema.json'))
 var validLintRequest = ajv.compile(require('./requests/lint.schema.json'))
+var validCritiqueRequest = ajv.compile(require('./requests/critique.schema.json'))
 
 var POST_BODY_LIMIT = process.env.POST_BODY_LIMIT || 500000
 
@@ -30,6 +32,8 @@ module.exports = function (request, response) {
         return handleRender(parsedRequest, response)
       } else if (validLintRequest(parsedRequest)) {
         return handleLint(parsedRequest, response)
+      } else if (validCritiqueRequest(parsedRequest)) {
+        return handleCritique(parsedRequest, response)
       } else {
         return clientError('invalid request')
       }
@@ -110,6 +114,21 @@ module.exports = function (request, response) {
       if (error) return clientError(error)
       try {
         var results = lint(form)
+      } catch (error) {
+        /* istanbul ignore next */
+        return serverError(error)
+      }
+      response.statusCode = 200
+      response.end(JSON.stringify(results))
+    })
+  }
+
+  // Handle critique requests.
+  function handleCritique (request, response) {
+    parseForm(request, function (error, form) {
+      if (error) return clientError(error)
+      try {
+        var results = critique(form)
       } catch (error) {
         /* istanbul ignore next */
         return serverError(error)
