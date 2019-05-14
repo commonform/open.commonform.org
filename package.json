@@ -1,5 +1,7 @@
 {
   "private": true,
+  "name": "open.commonform.org",
+  "description": "simple JSON-over-HTTP-post wrapper around a few Common Form utilities",
   "repository": "commonform/open.commonform.org",
   "license": "BlueOak-1.0.0",
   "dependencies": {
