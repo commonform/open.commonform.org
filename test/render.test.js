@@ -149,6 +149,48 @@ tape('DOCX', function (test) {
   })
 })
 
+tape('DOCX with specific numbering', function (test) {
+  withTestServer(function (port, close) {
+    http.request({ port, method: 'POST' })
+      .once('response', function (response) {
+        test.equal(response.statusCode, 200, '200')
+        close()
+        test.end()
+      })
+      .end(JSON.stringify({
+        action: 'render',
+        title: 'Test Form',
+        format: 'docx',
+        numbering: 'decimal',
+        form: {
+          format: 'markup',
+          data: '    \\Test Heading\\ form text'
+        }
+      }))
+  })
+})
+
+tape('DOCX with invalid numbering', function (test) {
+  withTestServer(function (port, close) {
+    http.request({ port, method: 'POST' })
+      .once('response', function (response) {
+        test.equal(response.statusCode, 400, '400')
+        close()
+        test.end()
+      })
+      .end(JSON.stringify({
+        action: 'render',
+        title: 'Test Form',
+        format: 'docx',
+        numbering: 'invalid',
+        form: {
+          format: 'markup',
+          data: '    \\Test Heading\\ form text'
+        }
+      }))
+  })
+})
+
 tape('DOCX with blanks', function (test) {
   withTestServer(function (port, close) {
     http.request({ port, method: 'POST' })

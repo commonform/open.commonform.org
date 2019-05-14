@@ -35,3 +35,22 @@ tape('broken reference', function (test) {
       .end(JSON.stringify(request))
   })
 })
+
+tape('lint invalid form', function (test) {
+  var request = {
+    action: 'lint',
+    form: {
+      format: 'json',
+      data: 'invalid JSON'
+    }
+  }
+  withTestServer(function (port, close) {
+    http.request({ port, method: 'POST' })
+      .once('response', function (response) {
+        test.equal(response.statusCode, 400, '400')
+        close()
+        test.end()
+      })
+      .end(JSON.stringify(request))
+  })
+})
