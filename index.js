@@ -110,25 +110,19 @@ module.exports = function (request, response) {
 
   // Handle lint requests.
   function handleLint (request, response) {
-    parseForm(request, function (error, form) {
-      if (error) return clientError(error)
-      try {
-        var results = lint(form)
-      } catch (error) {
-        /* istanbul ignore next */
-        return serverError(error)
-      }
-      response.statusCode = 200
-      response.end(JSON.stringify(results))
-    })
+    serveResults(lint, request, response)
   }
 
   // Handle critique requests.
   function handleCritique (request, response) {
+    serveResults(critique, request, response)
+  }
+
+  function serveResults (compute, request, response) {
     parseForm(request, function (error, form) {
       if (error) return clientError(error)
       try {
-        var results = critique(form)
+        var results = compute(form)
       } catch (error) {
         /* istanbul ignore next */
         return serverError(error)
