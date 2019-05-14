@@ -1,0 +1,29 @@
+{
+  "type": "object",
+  "properties": {
+    "action": {
+      "const": "lint"
+    },
+    "form": {
+      "title": "form data",
+      "type": "object",
+      "properties": {
+        "format": {
+          "title": "form data format",
+          "enum": [
+            "markup",
+            "json"
+          ]
+        },
+        "data": {
+          "title": "form data",
+          "type": "string"
+        }
+      }
+    }
+  },
+  "required": [
+    "action",
+    "form"
+  ]
+}

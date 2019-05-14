@@ -8,6 +8,7 @@
     "ajv": "^6.10.0",
     "commonform-docx": "^1.4.0",
     "commonform-html": "^2.0.0",
+    "commonform-lint": "^2.0.0",
     "commonform-markdown": "^1.2.3",
     "commonform-markup-parse": "^0.4.2",
     "commonform-validate": "^1.0.1",
