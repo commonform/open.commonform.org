@@ -1,3 +1,4 @@
+var docx = require('commonform-docx')
 var html = require('commonform-html')
 
 module.exports = {
@@ -9,6 +10,11 @@ module.exports = {
     options = options || {}
     options.html5 = true
     return html(form, blanks, options)
+  },
+
+  docx: function (form, blanks, options) {
+    var rendered = docx(form, blanks, options)
+    return rendered.generate({ type: 'nodebuffer' })
   },
 
   markdown: require('commonform-markdown')

@@ -129,6 +129,26 @@ tape('markup', function (test) {
   )
 })
 
+tape('DOCX', function (test) {
+  withTestServer(function (port, close) {
+    http.request({ port, method: 'POST' })
+      .once('response', function (response) {
+        test.equal(response.statusCode, 200, '200')
+        close()
+        test.end()
+      })
+      .end(JSON.stringify({
+        action: 'render',
+        title: 'Test Form',
+        format: 'docx',
+        form: {
+          format: 'markup',
+          data: '    \\Test Heading\\ form text'
+        }
+      }))
+  })
+})
+
 tape('invalid JSON', function (test) {
   withTestServer(function (port, close) {
     http.request({ port, method: 'POST' })

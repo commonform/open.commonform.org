@@ -6,6 +6,7 @@
     },
     "format": {
       "enum": [
+        "docx",
         "html",
         "html5",
         "markdown"
@@ -27,6 +28,15 @@
           "type": "string"
         }
       }
+    },
+    "numbering": {
+      "enum": [
+        "decimal",
+        "outline"
+      ]
+    },
+    "styles": {
+      "type": "object"
     },
     "title": {
       "title": "optional document title",

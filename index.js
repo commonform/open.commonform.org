@@ -1,5 +1,6 @@
 var AJV = require('ajv')
 var lint = require('commonform-lint')
+var numberings = require('./numberings')
 var parseMarkup = require('commonform-markup-parse')
 var renderers = require('./renderers')
 var simpleConcat = require('simple-concat')
@@ -42,7 +43,28 @@ module.exports = function (request, response) {
       var renderer = renderers[request.format]
       /* istanbul ignore next */
       if (!renderer) return clientError('unknown format')
-      var rendered = renderer(form)
+      var blanks = []
+      var options = {}
+      var optionKeys = [
+        'title', 'edition', 'hash', 'markFilled', 'styles'
+      ]
+      optionKeys.forEach(function (key) {
+        if (request[key]) options[key] = request[key]
+      })
+      var numbering = request.numbering
+      if (numbering) {
+        if (!numberings.hasOwnProperty(numbering)) {
+          return clientError('unknown numbering')
+        }
+        options.numbering = numberings[numbering]
+      } else {
+        options.numbering = numberings.default
+      }
+      try {
+        var rendered = renderer(form, blanks, options)
+      } catch (error) {
+        return serverError(error)
+      }
       response.statusCode = 200
       response.end(rendered)
     })
@@ -68,17 +90,17 @@ module.exports = function (request, response) {
     if (request.form.format === 'json') {
       try {
         form = JSON.parse(formData)
-        return callback(null, form)
       } catch (error) {
         return callback(new Error('invalid form JSON'))
       }
+      return callback(null, form)
     } else if (request.form.format === 'markup') {
       try {
         form = parseMarkup(formData).form
-        return callback(null, form)
       } catch (error) {
         return callback(new Error('invalid form markup'))
       }
+      return callback(null, form)
     }
   }
 
