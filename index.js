@@ -33,7 +33,8 @@ module.exports = function (request, response) {
     })
   } else {
     response.statusCode = 302
-    response.setHeader('Location', 'https://github.com/commonform/open.commonform.org')
+    var repo = 'https://github.com/commonform/open.commonform.org'
+    response.setHeader('Location', repo)
     response.end()
   }
 
