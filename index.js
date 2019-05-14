@@ -10,11 +10,11 @@ var validRenderRequest = ajv.compile(require('./requests/render.schema.json'))
 var validLintRequest = ajv.compile(require('./requests/lint.schema.json'))
 
 module.exports = function (request, response) {
-  simpleConcat(request, function (error, body) {
-    /* istanbul ignore if */
-    if (error) return serverError(error)
+  if (request.method === 'POST') {
+    simpleConcat(request, function (error, body) {
+      /* istanbul ignore if */
+      if (error) return serverError(error)
 
-    if (request.method === 'POST') {
       // Parse JSON.
       try {
         var parsedRequest = JSON.parse(body)
@@ -30,12 +30,12 @@ module.exports = function (request, response) {
       } else {
         return clientError('invalid request')
       }
-    } else {
-      response.statusCode = 302
-      response.setHeader('Location', 'https://github.com/commonform/open.commonform.org')
-      response.end()
-    }
-  })
+    })
+  } else {
+    response.statusCode = 302
+    response.setHeader('Location', 'https://github.com/commonform/open.commonform.org')
+    response.end()
+  }
 
   function handleRender (request, response) {
     parseForm(request, function (error, form, directions) {
