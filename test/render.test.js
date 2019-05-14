@@ -211,4 +211,3 @@ function strictEqual (request, expected, test) {
       .end(JSON.stringify(request))
   })
 }
-
