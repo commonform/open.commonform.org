@@ -110,6 +110,31 @@ tape('render HTML5', function (test) {
   )
 })
 
+tape('render CommonMark to HTML5', function (test) {
+  strictEqual(
+    {
+      action: 'render',
+      format: 'html5',
+      form: {
+        format: 'commonmark',
+        data: [
+          '# Test Heading',
+          'form text'
+        ].join('\n')
+      }
+    },
+    [
+      '<article>',
+      '<section>',
+      '<h1>Test Heading</h1>',
+      '<p>form text</p>',
+      '</section>',
+      '</article>'
+    ].join(''),
+    test
+  )
+})
+
 tape('markup', function (test) {
   strictEqual(
     {

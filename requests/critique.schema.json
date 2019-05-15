@@ -11,8 +11,9 @@
         "format": {
           "title": "form data format",
           "enum": [
-            "markup",
-            "json"
+            "commonmark",
+            "json",
+            "markup"
           ]
         },
         "data": {

@@ -3,6 +3,7 @@ var concat = require('./concat')
 var critique = require('commonform-critique')
 var lint = require('commonform-lint')
 var numberings = require('./numberings')
+var parseCommonMark = require('commonmark-to-commonform')
 var parseMarkup = require('commonform-markup-parse')
 var renderers = require('./renderers')
 
@@ -134,19 +135,28 @@ module.exports = function (request, response) {
 
   function parseForm (request, callback) {
     var formData = request.form.data
+    var format = request.form.format
+    var parsed
     /* istanbul ignore else */
-    if (request.form.format === 'json') {
+    if (format === 'json') {
       try {
         var form = JSON.parse(formData)
       } catch (error) {
         return callback(new Error('invalid form JSON'))
       }
       return callback(null, form)
-    } else if (request.form.format === 'markup') {
+    } else if (format === 'markup') {
       try {
-        var parsed = parseMarkup(formData)
+        parsed = parseMarkup(formData)
       } catch (error) {
         return callback(new Error('invalid form markup'))
+      }
+      return callback(null, parsed.form, parsed.directions)
+    } else if (format === 'commonmark') {
+      try {
+        parsed = parseCommonMark(formData)
+      } catch (error) {
+        return callback(new Error('invalid CommonMark form'))
       }
       return callback(null, parsed.form, parsed.directions)
     }
