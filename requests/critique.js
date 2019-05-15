@@ -1,13 +1,8 @@
 module.exports = {
-  'type': 'object',
-  'properties': {
-    'action': {
-      'const': 'critique'
-    },
-    'form': require('./form')
+  type: 'object',
+  properties: {
+    action: { const: 'critique' },
+    form: require('./form')
   },
-  'required': [
-    'action',
-    'form'
-  ]
+  required: [ 'action', 'form' ]
 }
