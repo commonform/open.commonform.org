@@ -8,9 +8,9 @@ var parseMarkup = require('commonform-markup-parse')
 var renderers = require('./renderers')
 
 var ajv = new AJV()
-var validRenderRequest = ajv.compile(require('./requests/render.schema.json'))
-var validLintRequest = ajv.compile(require('./requests/lint.schema.json'))
-var validCritiqueRequest = ajv.compile(require('./requests/critique.schema.json'))
+var validRenderRequest = ajv.compile(require('./requests/render'))
+var validLintRequest = ajv.compile(require('./requests/lint'))
+var validCritiqueRequest = ajv.compile(require('./requests/critique'))
 
 var POST_BODY_LIMIT = process.env.POST_BODY_LIMIT || 500000
 
