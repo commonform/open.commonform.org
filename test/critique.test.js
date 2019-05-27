@@ -25,7 +25,7 @@ tape('critique archaism', function (test) {
       .once('response', function (response) {
         simpleConcat(response, function (error, buffer) {
           test.ifError(error)
-          test.deepEqual(JSON.parse(buffer), results)
+          test.deepEqual(JSON.parse(buffer)[0], results[0])
           close()
           test.end()
         })

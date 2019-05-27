@@ -1,0 +1,130 @@
+syntax = "proto3";
+
+package commonform;
+
+// golang
+option go_package = "github.com/commonform/open.commonform.org";
+
+// java
+option java_multiple_files = true;
+option java_package = "org.commonform.open";
+option java_outer_classname = "CommonFormEngine";
+
+// objective c
+option objc_class_prefix = "CFE";
+
+// The service definition for the GRPC server. Here we
+// implement two functions which are needed by many
+// document assembly systems.
+//
+// The first is the Extract function which takes in a
+// document message and returns an array of strings which
+// are the identifiers in the form.
+//
+// The second is the Assemble function which takes in a
+// message which is a structured message including all
+// of the information needed to assemble a commonform
+// template into the defined output: html, html5, docx
+service CommonFormEngine {
+  // Extracts the paramters.
+  rpc Extract(Document) returns (Blanks) {}
+
+  // Assembles the document.
+  rpc Assemble(ToAssemble) returns (Document) {}
+}
+
+// The Document message is a fairly straight-forward and
+// object which includes a modicum of meta data which is needed
+// both by the cf-server as well as clients of this server
+// along with a filename and the contents of the file as a
+// byte slice (golang) or a bytes buffer (node).
+message Document {
+  message DocumentMeta {
+    required string name = 1;
+    string mime = 2;
+    enum InputFormat {
+      commonmark = 1;
+      json = 2;
+      markup = 3;
+    }
+    InputFormat format = 3 [default = commonmark];
+  }
+  DocumentMeta meta = 1;
+  bytes data = 2;
+}
+
+// The Blanks message is a simple wrapper around an array of
+// strings since we cannot return arrays.
+message Blanks {
+  repeated string blanks = 1;
+}
+
+// The ToAssemble message is fairly complex due to the structure
+// of the information which commonform expects us to send it.
+//
+// Many of the nobs that can be turned within the commonform server
+// have reasonable defaults given BOTH within the server/engine
+// itself and within the ToAssemble message. As such, many of the
+// below feilds are optional (or repeated, which assumes optional
+// in protobuf parlance).
+message ToAssemble {
+  required Document document = 1;
+  string title = 2;
+
+  // we use a formalized object to enhance type safety
+  message Blank {
+    string name = 1;
+    string value = 2;
+  }
+  repeated Blank blanks = 3;
+
+  // we use a formalized object to enhance type safety
+  message Signature {
+    required string term = 1;
+    required string name = 2;
+    string header = 3;
+    repeated string information = 4;
+    bool samePage = 5 [default = false];
+    message Entity {
+      required string name = 1;
+      required string form = 2;
+      required string jurisdiction = 3;
+      required string by = 4;
+    }
+    repeated Entity entities = 6;
+  }
+  repeated Signature signatures = 4;
+
+  // really the below should be a formalized object,
+  // but protobuf cannot cope with the mixed output
+  // it would require since it is really a
+  // map<string, (string|bool)> . as such, until
+  // we systematize the sytles object or protobuf
+  // changes it's type guarantees we just send the
+  // json bytes in and allow the server to Marshal
+  // them into a json object the server can read.
+  bytes styles = 5;
+
+  // we use an enum both for type safety as well as to
+  // signal what has been implemented in the server.
+  enum OutputFormat {
+    docx = 0;
+    html = 1;
+    html5 = 2;
+    markdown = 3;
+  }
+  OutputFormat format = 6 [default = docx];
+
+  // the below are options but we should be largely
+  // opinionated for most uses.
+  enum NumberFormat {
+    decimal = 0;
+    outline = 1;
+  }
+  NumberFormat numbering = 7 [default = outline];
+  bool hash = 8 [default = false];
+  bool indentMargins = 9 [default = true];
+  bool leftAlignTitle = 10 [default = true];
+  bool markFilled = 11 [default = true];
+  string unfilledBlanks = 12 [default = "[ TBD ]"];
+}

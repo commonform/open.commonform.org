@@ -1,4 +1,4 @@
-var handler = require('../')
+var handler = require('../http-handler.js')
 var http = require('http')
 var pino = require('pino')
 var pinoHTTP = require('pino-http')
