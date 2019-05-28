@@ -95,7 +95,7 @@ tape('should setup server', function (test) {
   })
 
   server.bindAsync(host + ':0', grpc.ServerCredentials.createInsecure(), (error, portNumber) => {
-    test.error(error, 'unexpected error setting up server')
+    test.error(error)
     server.start()
     client = new commonFormProto.CommonFormEngine(host + ':' + portNumber, grpc.credentials.createInsecure())
     test.notEqual(client, undefined)
@@ -107,11 +107,11 @@ tape('should setup server', function (test) {
 tape('should run an extract', async function (test) {
   client.Extract(doc1, function (error, response) {
     var exp1 = ['from somewhere', 'then came raisins']
-    test.error(error, 'unexpected error during extraction')
+    test.error(error)
     test.deepEqual(response.blanks, exp1)
     client.Extract(doc2, function (error, response) {
       var exp2 = ['wide world']
-      test.error(error, 'unexpected error during extraction')
+      test.error(error)
       test.deepEqual(response.blanks, exp2)
       client.Extract(doc3, function (error, response) {
         test.notEqual(error, null, 'unexpected lack of an error during extraction')
@@ -125,14 +125,14 @@ tape('should run an extract', async function (test) {
 tape('should run an assemble with all the things', async function (test) {
   client.Assemble({ document: doc1, styles: styles, blanks: blanks, signatures: sigs }, function (error, response) {
     var exp1 = { name: 'form1.md', mime: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', format: 'commonmark' }
-    test.error(error, 'unexpected error during assembly')
+    test.error(error)
     test.deepEqual(response.meta, exp1)
-    test.deepEqual(response.data.length, 67435)
+    test.deepEqual(response.data.length, 67408)
     client.Assemble({ document: doc2, styles: styles, blanks: blanks, signatures: sigs }, function (error, response) {
       var exp2 = { name: 'form2.md', mime: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', format: 'commonmark' }
-      test.error(error, 'unexpected error during assembly')
+      test.error(error)
       test.deepEqual(response.meta, exp2)
-      test.deepEqual(response.data.length, 67231)
+      test.deepEqual(response.data.length, 67204)
       client.Assemble({ document: doc3, styles: styles, blanks: blanks, signatures: sigs }, function (error, response) {
         test.notEqual(error, null, 'unexpected lack of an error during extraction')
         test.deepEqual(response, undefined)
@@ -145,14 +145,14 @@ tape('should run an assemble with all the things', async function (test) {
 tape('should run an assemble with null styles', async function (test) {
   client.Assemble({ document: doc1, styles: null, blanks: blanks, signatures: sigs }, function (error, response) {
     var exp1 = { name: 'form1.md', mime: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', format: 'commonmark' }
-    test.error(error, 'unexpected error during assembly')
+    test.error(error)
     test.deepEqual(response.meta, exp1)
-    test.deepEqual(response.data.length, 67435)
+    test.deepEqual(response.data.length, 67408)
     client.Assemble({ document: doc2, styles: null, blanks: blanks, signatures: sigs }, function (error, response) {
       var exp2 = { name: 'form2.md', mime: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', format: 'commonmark' }
-      test.error(error, 'unexpected error during assembly')
+      test.error(error)
       test.deepEqual(response.meta, exp2)
-      test.deepEqual(response.data.length, 67231)
+      test.deepEqual(response.data.length, 67204)
       client.Assemble({ document: doc3, styles: null, blanks: blanks, signatures: sigs }, function (error, response) {
         test.notEqual(error, null, 'unexpected lack of an error during extraction')
         test.deepEqual(response, undefined)
@@ -165,14 +165,14 @@ tape('should run an assemble with null styles', async function (test) {
 tape('should run an assemble with null blanks', async function (test) {
   client.Assemble({ document: doc1, styles: styles, blanks: null, signatures: sigs }, function (error, response) {
     var exp1 = { name: 'form1.md', mime: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', format: 'commonmark' }
-    test.error(error, 'unexpected error during assembly')
+    test.error(error)
     test.deepEqual(response.meta, exp1)
-    test.deepEqual(response.data.length, 67457)
+    test.deepEqual(response.data.length, 67430)
     client.Assemble({ document: doc2, styles: styles, blanks: null, signatures: sigs }, function (error, response) {
       var exp2 = { name: 'form2.md', mime: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', format: 'commonmark' }
-      test.error(error, 'unexpected error during assembly')
+      test.error(error)
       test.deepEqual(response.meta, exp2)
-      test.deepEqual(response.data.length, 67231)
+      test.deepEqual(response.data.length, 67204)
       client.Assemble({ document: doc3, styles: styles, blanks: null, signatures: sigs }, function (error, response) {
         test.notEqual(error, null, 'unexpected lack of an error during extraction')
         test.deepEqual(response, undefined)
@@ -185,14 +185,14 @@ tape('should run an assemble with null blanks', async function (test) {
 tape('should run an assemble with null signatures', async function (test) {
   client.Assemble({ document: doc1, styles: styles, blanks: blanks, signatures: null }, function (error, response) {
     var exp1 = { name: 'form1.md', mime: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', format: 'commonmark' }
-    test.error(error, 'unexpected error during assembly')
+    test.error(error)
     test.deepEqual(response.meta, exp1)
-    test.deepEqual(response.data.length, 64577)
+    test.deepEqual(response.data.length, 64550)
     client.Assemble({ document: doc2, styles: styles, blanks: blanks, signatures: null }, function (error, response) {
       var exp2 = { name: 'form2.md', mime: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', format: 'commonmark' }
-      test.error(error, 'unexpected error during assembly')
+      test.error(error)
       test.deepEqual(response.meta, exp2)
-      test.deepEqual(response.data.length, 64373)
+      test.deepEqual(response.data.length, 64346)
       client.Assemble({ document: doc3, styles: styles, blanks: blanks, signatures: null }, function (error, response) {
         test.notEqual(error, null, 'unexpected lack of an error during extraction')
         test.deepEqual(response, undefined)

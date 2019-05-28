@@ -32,8 +32,3 @@ The configuration of the engine is handled via environment variables:
 | `ENABLE_GRPC_SERVER` | Turns on the GRPC server | `true` |
 | `GRPC_SERVER_HOST` | Host the GRPC server should listen on (generally this should be blank unless you really know what you're doing) | `127.0.0.1` |
 | `GRPC_SERVER_PORT` | Port the GRPC server should listen on | `8081` |
-
-## TODOs
-
-- [ ] auto-build docker image
-- [ ] golang client

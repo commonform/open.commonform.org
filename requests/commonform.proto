@@ -40,14 +40,14 @@ service CommonFormEngine {
 // byte slice (golang) or a bytes buffer (node).
 message Document {
   message DocumentMeta {
-    required string name = 1;
+    string name = 1;
     string mime = 2;
     enum InputFormat {
-      commonmark = 1;
-      json = 2;
-      markup = 3;
+      commonmark = 0;
+      json = 1;
+      markup = 2;
     }
-    InputFormat format = 3 [default = commonmark];
+    InputFormat format = 3; //[default = commonmark];
   }
   DocumentMeta meta = 1;
   bytes data = 2;
@@ -68,7 +68,7 @@ message Blanks {
 // below feilds are optional (or repeated, which assumes optional
 // in protobuf parlance).
 message ToAssemble {
-  required Document document = 1;
+  Document document = 1;
   string title = 2;
 
   // we use a formalized object to enhance type safety
@@ -80,16 +80,16 @@ message ToAssemble {
 
   // we use a formalized object to enhance type safety
   message Signature {
-    required string term = 1;
-    required string name = 2;
+    string term = 1;
+    string name = 2;
     string header = 3;
     repeated string information = 4;
-    bool samePage = 5 [default = false];
+    bool samePage = 5; //[default = false];
     message Entity {
-      required string name = 1;
-      required string form = 2;
-      required string jurisdiction = 3;
-      required string by = 4;
+      string name = 1;
+      string form = 2;
+      string jurisdiction = 3;
+      string by = 4;
     }
     repeated Entity entities = 6;
   }
@@ -113,7 +113,7 @@ message ToAssemble {
     html5 = 2;
     markdown = 3;
   }
-  OutputFormat format = 6 [default = docx];
+  OutputFormat format = 6; //[default = docx];
 
   // the below are options but we should be largely
   // opinionated for most uses.
@@ -121,10 +121,10 @@ message ToAssemble {
     decimal = 0;
     outline = 1;
   }
-  NumberFormat numbering = 7 [default = outline];
-  bool hash = 8 [default = false];
-  bool indentMargins = 9 [default = true];
-  bool leftAlignTitle = 10 [default = true];
-  bool markFilled = 11 [default = true];
-  string unfilledBlanks = 12 [default = "[ TBD ]"];
+  NumberFormat numbering = 7; //[default = outline];
+  bool hash = 8; //[default = false];
+  bool indentMargins = 9; //[default = true];
+  bool leftAlignTitle = 10; //[default = true];
+  bool markFilled = 11; //[default = true];
+  string unfilledBlanks = 12; //[default = "[ TBD ]"];
 }
