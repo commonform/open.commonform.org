@@ -33,13 +33,15 @@ const Assemble = async (call) => {
           // Process easy rendering options.
           var options = {}
           var passthroughOptionKeys = [
-            'title', 'hash', 'indentMargins', 'leftAlignTitle', 'markFilled', 'unfilledBlanks'
+            'title', 'hash', 'indentMargins', 'markFilled'
           ]
           passthroughOptionKeys.forEach(function (key) {
             if (call.request[key]) {
               options[key] = call.request[key]
             }
           })
+          options.blanks = call.request.unfilledBlanks
+          options.centerTitle = !call.request.leftAlignTitle
 
           // Process styles =>
           // we current send the styles in as a JSON string. see comments in
@@ -47,7 +49,7 @@ const Assemble = async (call) => {
           // not an empty buffer before we call JSON.parse or else node will
           // panic on us here.
           if (call.request.styles.length !== 0) {
-            options['styles'] = JSON.parse(call.request.styles.toString('utf8'))
+            options['styles'] = JSON.parse(JSON.parse(call.request.styles))
           }
 
           // Process numbering.
