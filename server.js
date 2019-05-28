@@ -7,12 +7,12 @@ var pino = require('pino')
 var pinoHTTP = require('pino-http')
 
 // set log level
-var logLevel = process.env.LOG_LEVEL || 'warn'
+var logLevel = process.env.LOG_LEVEL || 'info'
 var serverLog = pino({
   level: logLevel
 })
 
-var httpS, grpcS
+var httpS, grpcS, httpSOn, grpcSOn
 
 // gracefully shutdown
 var trap = function () {
@@ -28,21 +28,32 @@ process.on('uncaughtException', function (exception) {
 })
 
 function cleanup () {
-  httpS.close(function () {
-    serverLog.trace({ event: 'http server gracefully shutdown' })
-    grpcS.tryShutdown(function () {
-      serverLog.trace({ event: 'grpc server gracefully shutdown' })
-      serverLog.warn({ event: 'engine shutdown' })
-      process.exit(0)
+  if (httpSOn) {
+    httpS.close(function () {
+      serverLog.trace({ event: 'http server gracefully shutdown' })
+      if (grpcSOn) {
+        grpcS.tryShutdown(function () {
+          serverLog.trace({ event: 'grpc server gracefully shutdown' })
+        })
+      }
     })
-  })
+  } else {
+    if (grpcSOn) {
+      grpcS.tryShutdown(function () {
+        serverLog.trace({ event: 'grpc server gracefully shutdown' })
+      })
+    }
+  }
+  serverLog.warn({ event: 'engine shutdown' })
+  process.exit(0)
 };
 
 // turn on http server
 var httpServerHost = process.env.HTTP_SERVER_HOST || '127.0.0.1'
 var httpServerPort = process.env.HTTP_SERVER_PORT || 8080
-var enablehttpServer = process.env.ENABLE_HTTP_SERVER || true
-if (enablehttpServer) {
+var enablehttpServer = process.env.ENABLE_HTTP_SERVER || 'true'
+httpSOn = (enablehttpServer === 'true')
+if (httpSOn) {
   serverLog.debug({ event: 'booting http server' })
   httpS = httpServer(pinoHTTP({ logger: serverLog }))
   httpS.listen(httpServerPort, httpServerHost, function () {
@@ -53,8 +64,9 @@ if (enablehttpServer) {
 // turn on grpc server
 var grpcServerHost = process.env.GRPC_SERVER_HOST || '127.0.0.1'
 var grpcServerPort = process.env.GRPC_SERVER_PORT || 8081
-var enablegrpcServer = process.env.ENABLE_GRPC_SERVER || true
-if (enablegrpcServer) {
+var enablegrpcServer = process.env.ENABLE_GRPC_SERVER || 'true'
+grpcSOn = (enablegrpcServer === 'true')
+if (grpcSOn) {
   serverLog.debug({ event: 'booting grpc server' })
   grpcS = grpcServer(grpcServerHost, grpcServerPort, serverLog)
   grpcS.start()
