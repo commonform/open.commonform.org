@@ -4,8 +4,10 @@
 package open_commonform_org
 
 import (
+	context "context"
 	fmt "fmt"
 	proto "github.com/golang/protobuf/proto"
+	grpc "google.golang.org/grpc"
 	math "math"
 )
 
@@ -653,4 +655,113 @@ var fileDescriptor_2f1f3a923a12f016 = []byte{
 	0x31, 0xd5, 0xda, 0xbd, 0x8d, 0x7e, 0x4f, 0xeb, 0x6f, 0xf9, 0xb3, 0xf8, 0x9b, 0xd9, 0x3c, 0x39,
 	0x9d, 0x4c, 0x2d, 0xfc, 0x1f, 0xd8, 0xff, 0x15, 0x00, 0x00, 0xff, 0xff, 0x81, 0xb0, 0x9a, 0x4a,
 	0x1b, 0x06, 0x00, 0x00,
+}
+
+// Reference imports to suppress errors if they are not otherwise used.
+var _ context.Context
+var _ grpc.ClientConn
+
+// This is a compile-time assertion to ensure that this generated file
+// is compatible with the grpc package it is being compiled against.
+const _ = grpc.SupportPackageIsVersion4
+
+// CommonFormEngineClient is the client API for CommonFormEngine service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
+type CommonFormEngineClient interface {
+	// Extracts the paramters.
+	Extract(ctx context.Context, in *Document, opts ...grpc.CallOption) (*Blanks, error)
+	// Assembles the document.
+	Assemble(ctx context.Context, in *ToAssemble, opts ...grpc.CallOption) (*Document, error)
+}
+
+type commonFormEngineClient struct {
+	cc *grpc.ClientConn
+}
+
+func NewCommonFormEngineClient(cc *grpc.ClientConn) CommonFormEngineClient {
+	return &commonFormEngineClient{cc}
+}
+
+func (c *commonFormEngineClient) Extract(ctx context.Context, in *Document, opts ...grpc.CallOption) (*Blanks, error) {
+	out := new(Blanks)
+	err := c.cc.Invoke(ctx, "/commonform.CommonFormEngine/Extract", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *commonFormEngineClient) Assemble(ctx context.Context, in *ToAssemble, opts ...grpc.CallOption) (*Document, error) {
+	out := new(Document)
+	err := c.cc.Invoke(ctx, "/commonform.CommonFormEngine/Assemble", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// CommonFormEngineServer is the server API for CommonFormEngine service.
+type CommonFormEngineServer interface {
+	// Extracts the paramters.
+	Extract(context.Context, *Document) (*Blanks, error)
+	// Assembles the document.
+	Assemble(context.Context, *ToAssemble) (*Document, error)
+}
+
+func RegisterCommonFormEngineServer(s *grpc.Server, srv CommonFormEngineServer) {
+	s.RegisterService(&_CommonFormEngine_serviceDesc, srv)
+}
+
+func _CommonFormEngine_Extract_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Document)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CommonFormEngineServer).Extract(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/commonform.CommonFormEngine/Extract",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CommonFormEngineServer).Extract(ctx, req.(*Document))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CommonFormEngine_Assemble_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ToAssemble)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CommonFormEngineServer).Assemble(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/commonform.CommonFormEngine/Assemble",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CommonFormEngineServer).Assemble(ctx, req.(*ToAssemble))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+var _CommonFormEngine_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "commonform.CommonFormEngine",
+	HandlerType: (*CommonFormEngineServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "Extract",
+			Handler:    _CommonFormEngine_Extract_Handler,
+		},
+		{
+			MethodName: "Assemble",
+			Handler:    _CommonFormEngine_Assemble_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "commonform.proto",
 }

@@ -18,7 +18,7 @@ PROTO_GO_FILES_REAL = $(shell find . -type f -name '*.pb.go' -print)
 # Protobuffing
 ## compile scalia.proto interface definition
 %.pb.go: %.proto
-	protoc -I=requests --go_out=. $<
+	protoc -I=requests --go_out=plugins=grpc:. $<
 
 .PHONY: protobuf
 protobuf: clean_protobuf $(PROTO_GO_FILES)
