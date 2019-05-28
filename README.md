@@ -15,7 +15,7 @@ There are two ways to install the engine within your system.
 
 The first is to clone the repository, build the Docker image, push to a repository, and then to turn it on via the instructions below.
 
-The second is to leverage the auto-built Docker images [CSK TODO](#todo) within your cluster.
+The second is to leverage the [auto-built Docker images](https://quay.io/repository/monax/commonform-engine) within your cluster.
 
 ## Operate
 

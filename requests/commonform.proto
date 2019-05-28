@@ -47,7 +47,7 @@ message Document {
       json = 1;
       markup = 2;
     }
-    InputFormat format = 3; //[default = commonmark];
+    InputFormat format = 3;
   }
   DocumentMeta meta = 1;
   bytes data = 2;
@@ -84,7 +84,7 @@ message ToAssemble {
     string name = 2;
     string header = 3;
     repeated string information = 4;
-    bool samePage = 5; //[default = false];
+    bool samePage = 5;
     message Entity {
       string name = 1;
       string form = 2;
@@ -113,7 +113,7 @@ message ToAssemble {
     html5 = 2;
     markdown = 3;
   }
-  OutputFormat format = 6; //[default = docx];
+  OutputFormat format = 6;
 
   // the below are options but we should be largely
   // opinionated for most uses.
@@ -121,10 +121,10 @@ message ToAssemble {
     decimal = 0;
     outline = 1;
   }
-  NumberFormat numbering = 7; //[default = outline];
-  bool hash = 8; //[default = false];
-  bool indentMargins = 9; //[default = true];
-  bool leftAlignTitle = 10; //[default = true];
-  bool markFilled = 11; //[default = true];
-  string unfilledBlanks = 12; //[default = "[ TBD ]"];
+  NumberFormat numbering = 7;
+  bool hash = 8;
+  bool indentMargins = 9;
+  bool leftAlignTitle = 10;
+  bool markFilled = 11;
+  string unfilledBlanks = 12;
 }
