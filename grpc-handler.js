@@ -3,6 +3,8 @@ var renderers = require('./renderers')
 var numberings = require('./numberings')
 
 const docxMime = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+const htmlMime = 'text/html'
+const markdownMime = 'text/markdown'
 
 const Extract = async (call) => {
   return new Promise((resolve, reject) => {
@@ -83,17 +85,31 @@ const Assemble = async (call) => {
 
           // Process signatures =>
           // TODO: how to handle this when the info is known?
-          if (call.request.format === 'docx' && call.request.signatures) {
+          if (call.request.format === 'docx' && (call.request.useExternalSignatures)) {
+            options.after = require('./lib/ooxml-signature-pages-external')(call.request.externalSignatureCount)
+          } else if (call.request.format === 'docx' && call.request.signatures) {
             options.after = require('ooxml-signature-pages')(call.request.signatures)
           }
 
           var rendered = renderer(form, blanks, options)
           var result = {
             meta: {
-              name: call.request.document.meta.name,
-              mime: docxMime
+              name: call.request.document.meta.name
             },
             data: Buffer.from(rendered)
+          }
+          // ensure we give the result the proper mimetype
+          switch (call.request.format) {
+            case 'docx':
+              result.meta.mime = docxMime
+              break
+            case 'html':
+            case 'html5':
+              result.meta.mime = htmlMime
+              break
+            case 'markdown':
+              result.meta.mime = markdownMime
+              break
           }
           resolve(result)
         } catch (error) {

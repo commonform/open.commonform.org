@@ -1,5 +1,6 @@
 const tape = require('tape')
 const path = require('path')
+const fs = require('fs')
 const { Extract, Assemble } = require('../grpc-handler')
 
 const PROTO_PATH = path.join(__dirname, '..', 'requests', 'commonform.proto')
@@ -42,7 +43,7 @@ var buf3 = Buffer.from('# Hello World!\n\n## When I came over to your house\n\nI
 var doc3 = { meta: { name: 'form3.md', mime: 'text/anotherthing', format: 'commonmark' }, data: buf3 }
 
 // supplemental stuff
-var styles = Buffer.from('{"reference":{"underline":"single"}}')
+var styles = Buffer.from(JSON.stringify('{"reference":{"underline":"single"}}'))
 var blanks = [
   {
     name: 'from somewhere',
@@ -104,6 +105,19 @@ tape('should setup server', function (test) {
   })
 })
 
+tape('should use external signatures', async function (test) {
+  client.Assemble({ document: doc1, styles: styles, blanks: blanks, useExternalSignatures: true, externalSignatureCount: 3 }, function (error, response) {
+    var exp1 = { name: 'form1.md', mime: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', format: 'commonmark' }
+    test.error(error)
+    test.deepEqual(response.meta, exp1)
+    test.notDeepEqual(response.data.length, 0)
+    fs.writeFile(path.join(__dirname, 'results', 'newSignatures.docx'), response.data, function (err) {
+      test.error(err)
+      test.end()
+    })
+  })
+})
+
 tape('should run an extract', async function (test) {
   client.Extract(doc1, function (error, response) {
     var exp1 = ['from somewhere', 'then came raisins']
@@ -127,12 +141,12 @@ tape('should run an assemble with all the things', async function (test) {
     var exp1 = { name: 'form1.md', mime: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', format: 'commonmark' }
     test.error(error)
     test.deepEqual(response.meta, exp1)
-    test.deepEqual(response.data.length, 67408)
+    test.notDeepEqual(response.data.length, 0)
     client.Assemble({ document: doc2, styles: styles, blanks: blanks, signatures: sigs }, function (error, response) {
       var exp2 = { name: 'form2.md', mime: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', format: 'commonmark' }
       test.error(error)
       test.deepEqual(response.meta, exp2)
-      test.deepEqual(response.data.length, 67204)
+      test.notDeepEqual(response.data.length, 0)
       client.Assemble({ document: doc3, styles: styles, blanks: blanks, signatures: sigs }, function (error, response) {
         test.notEqual(error, null, 'unexpected lack of an error during extraction')
         test.deepEqual(response, undefined)
@@ -147,12 +161,12 @@ tape('should run an assemble with null styles', async function (test) {
     var exp1 = { name: 'form1.md', mime: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', format: 'commonmark' }
     test.error(error)
     test.deepEqual(response.meta, exp1)
-    test.deepEqual(response.data.length, 67408)
+    test.notDeepEqual(response.data.length, 0)
     client.Assemble({ document: doc2, styles: null, blanks: blanks, signatures: sigs }, function (error, response) {
       var exp2 = { name: 'form2.md', mime: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', format: 'commonmark' }
       test.error(error)
       test.deepEqual(response.meta, exp2)
-      test.deepEqual(response.data.length, 67204)
+      test.notDeepEqual(response.data.length, 0)
       client.Assemble({ document: doc3, styles: null, blanks: blanks, signatures: sigs }, function (error, response) {
         test.notEqual(error, null, 'unexpected lack of an error during extraction')
         test.deepEqual(response, undefined)
@@ -167,12 +181,12 @@ tape('should run an assemble with null blanks', async function (test) {
     var exp1 = { name: 'form1.md', mime: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', format: 'commonmark' }
     test.error(error)
     test.deepEqual(response.meta, exp1)
-    test.deepEqual(response.data.length, 67430)
+    test.notDeepEqual(response.data.length, 0)
     client.Assemble({ document: doc2, styles: styles, blanks: null, signatures: sigs }, function (error, response) {
       var exp2 = { name: 'form2.md', mime: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', format: 'commonmark' }
       test.error(error)
       test.deepEqual(response.meta, exp2)
-      test.deepEqual(response.data.length, 67204)
+      test.notDeepEqual(response.data.length, 0)
       client.Assemble({ document: doc3, styles: styles, blanks: null, signatures: sigs }, function (error, response) {
         test.notEqual(error, null, 'unexpected lack of an error during extraction')
         test.deepEqual(response, undefined)
@@ -187,12 +201,12 @@ tape('should run an assemble with null signatures', async function (test) {
     var exp1 = { name: 'form1.md', mime: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', format: 'commonmark' }
     test.error(error)
     test.deepEqual(response.meta, exp1)
-    test.deepEqual(response.data.length, 64550)
+    test.notDeepEqual(response.data.length, 0)
     client.Assemble({ document: doc2, styles: styles, blanks: blanks, signatures: null }, function (error, response) {
       var exp2 = { name: 'form2.md', mime: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', format: 'commonmark' }
       test.error(error)
       test.deepEqual(response.meta, exp2)
-      test.deepEqual(response.data.length, 64346)
+      test.notDeepEqual(response.data.length, 0)
       client.Assemble({ document: doc3, styles: styles, blanks: blanks, signatures: null }, function (error, response) {
         test.notEqual(error, null, 'unexpected lack of an error during extraction')
         test.deepEqual(response, undefined)

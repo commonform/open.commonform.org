@@ -5,6 +5,7 @@
   "repository": "commonform/open.commonform.org",
   "license": "BlueOak-1.0.0",
   "dependencies": {
+    "@grpc/proto-loader": "^0.5.1",
     "ajv": "^6.10.0",
     "commonform-critique": "^1.0.0",
     "commonform-docx": "^1.4.0",
@@ -16,11 +17,11 @@
     "commonmark-to-commonform": "^3.1.0",
     "decimal-numbering": "^2.0.1",
     "grpc": "^1.21.1",
-    "@grpc/proto-loader": "^0.5.1",
     "ooxml-signature-pages": "^3.0.0",
     "outline-numbering": "^1.0.2",
     "pino": "^5.12.3",
-    "pino-http": "^4.2.0"
+    "pino-http": "^4.2.0",
+    "xml-escape": "^1.1.0"
   },
   "devDependencies": {
     "husky": "^2.3.0",

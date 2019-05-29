@@ -127,4 +127,6 @@ message ToAssemble {
   bool leftAlignTitle = 10;
   bool markFilled = 11;
   string unfilledBlanks = 12;
+  bool useExternalSignatures = 13;
+  uint64 externalSignatureCount = 14;
 }
