@@ -51,7 +51,7 @@ const Assemble = async (call) => {
           // not an empty buffer before we call JSON.parse or else node will
           // panic on us here.
           if (call.request.styles.length !== 0) {
-            options['styles'] = JSON.parse(JSON.parse(call.request.styles))
+            options['styles'] = JSON.parse(call.request.styles)
           }
 
           // Process numbering.
