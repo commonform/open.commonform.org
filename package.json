@@ -14,7 +14,7 @@
     "commonform-markup-parse": "^0.4.2",
     "commonform-validate": "^1.0.1",
     "commonmark-to-commonform": "^2.0.0",
-    "decimal-numbering": "^2.0.1",
+    "decimal-numbering": "^3.0.2",
     "ooxml-signature-pages": "^3.0.2",
     "outline-numbering": "^2.0.0",
     "pino": "^5.12.6",
