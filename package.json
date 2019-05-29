@@ -9,7 +9,7 @@
     "commonform-critique": "^0.8.1",
     "commonform-docx": "^1.4.0",
     "commonform-html": "^2.0.0",
-    "commonform-lint": "^2.0.0",
+    "commonform-lint": "^3.0.0",
     "commonform-markdown": "^1.2.3",
     "commonform-markup-parse": "^1.1.0",
     "commonform-validate": "^1.0.1",
