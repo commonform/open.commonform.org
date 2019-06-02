@@ -98,14 +98,12 @@ module.exports = function (request, response) {
       }
 
       // Render.
-      try {
-        var rendered = renderer(form, blanks, options)
-      } catch (error) {
-        /* istanbul ignore next */
-        return serverError(error)
-      }
-      response.statusCode = 200
-      response.end(rendered)
+      renderer(form, blanks, options, function (error, rendered) {
+        /* istanbul ignore if */
+        if (error) return serverError(error)
+        response.statusCode = 200
+        response.end(rendered)
+      })
     })
   }
 

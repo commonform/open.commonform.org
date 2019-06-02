@@ -1,21 +1,41 @@
 var docx = require('commonform-docx')
 var html = require('commonform-html')
+var markdown = require('commonform-markdown')
 
 module.exports = {
-  html: function (form, blanks, options) {
-    return html(form, blanks, options)
-  },
+  html: wrapSynchronousRenderer(html),
 
-  html5: function (form, blanks, options) {
+  markdown: wrapSynchronousRenderer(markdown),
+
+  html5: function (form, blanks, options, callback) {
     options = options || {}
     options.html5 = true
-    return html(form, blanks, options)
+    try {
+      var rendered = html(form, blanks, options)
+    } catch (error) {
+      return callback(error)
+    }
+    callback(null, rendered)
   },
 
-  docx: function (form, blanks, options) {
+  docx: function (form, blanks, options, callback) {
     var rendered = docx(form, blanks, options)
-    return rendered.generate({ type: 'nodebuffer' })
-  },
+    return rendered
+      .generateAsync({ type: 'nodebuffer' })
+      .catch(callback)
+      .then(function (buffer) {
+        callback(null, buffer)
+      })
+  }
+}
 
-  markdown: require('commonform-markdown')
+function wrapSynchronousRenderer (renderer) {
+  return function (form, blanks, options, callback) {
+    try {
+      var rendered = renderer(form, blanks, options)
+    } catch (error) {
+      return callback(error)
+    }
+    callback(null, rendered)
+  }
 }
