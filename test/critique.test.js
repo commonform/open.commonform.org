@@ -11,21 +11,19 @@ tape('critique archaism', function (test) {
       data: JSON.stringify({ content: ['to wit'] })
     }
   }
-  var results = [
-    {
-      message: 'The phrase "to wit" is archaic.',
-      level: 'info',
-      path: [ 'content', 0 ],
-      source: 'commonform-archaic',
-      url: null
-    }
-  ]
+  var result = {
+    message: 'The phrase "to wit" is archaic.',
+    level: 'info',
+    path: [ 'content', 0 ],
+    source: 'commonform-archaic',
+    url: null
+  }
   withTestServer(function (port, close) {
     http.request({ port, method: 'POST' })
       .once('response', function (response) {
         simpleConcat(response, function (error, buffer) {
           test.ifError(error)
-          test.deepEqual(JSON.parse(buffer), results)
+          test.deepEqual(JSON.parse(buffer)[0], result)
           close()
           test.end()
         })

@@ -6,7 +6,7 @@
   "license": "BlueOak-1.0.0",
   "dependencies": {
     "ajv": "^6.10.0",
-    "commonform-critique": "^1.0.0",
+    "commonform-critique": "^1.0.1",
     "commonform-docx": "^3.0.0",
     "commonform-html": "^2.0.0",
     "commonform-lint": "^3.0.0",
