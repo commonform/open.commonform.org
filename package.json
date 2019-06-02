@@ -7,7 +7,7 @@
   "dependencies": {
     "ajv": "^6.10.0",
     "commonform-critique": "^1.0.1",
-    "commonform-docx": "^3.0.0",
+    "commonform-docx": "^4.0.0",
     "commonform-html": "^3.0.0",
     "commonform-lint": "^3.0.0",
     "commonform-markdown": "^1.2.3",
