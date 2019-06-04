@@ -19,7 +19,7 @@ process.on('SIGTERM', trap)
 process.on('SIGQUIT', trap)
 process.on('SIGINT', trap)
 process.on('uncaughtException', function (exception) {
-  serverLog.error({ exception: exception })
+  serverLog.error(exception)
   cleanup()
 })
 
