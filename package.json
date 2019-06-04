@@ -6,6 +6,7 @@
   "license": "BlueOak-1.0.0",
   "dependencies": {
     "ajv": "^6.10.0",
+    "commonform-commonmark": "^2.1.0",
     "commonform-critique": "^1.0.1",
     "commonform-docx": "^4.0.0",
     "commonform-html": "^3.0.0",
@@ -13,7 +14,6 @@
     "commonform-markdown": "^1.2.3",
     "commonform-markup-parse": "^1.1.0",
     "commonform-validate": "^1.0.1",
-    "commonmark-to-commonform": "^3.1.0",
     "decimal-numbering": "^3.0.2",
     "ooxml-signature-pages": "^3.0.2",
     "outline-numbering": "^2.0.0",

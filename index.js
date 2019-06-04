@@ -1,10 +1,10 @@
 var AJV = require('ajv')
 var URL = require('url')
+var commonmark = require('commonform-commonmark')
 var concat = require('./concat')
 var critique = require('commonform-critique')
 var lint = require('commonform-lint')
 var numberings = require('./numberings')
-var parseCommonMark = require('commonmark-to-commonform')
 var parseMarkup = require('commonform-markup-parse')
 var renderers = require('./renderers')
 
@@ -159,7 +159,7 @@ module.exports = function (request, response) {
       return callback(null, parsed.form, parsed.directions)
     } else if (format === 'commonmark') {
       try {
-        parsed = parseCommonMark(formData)
+        parsed = commonmark.parse(formData)
       } catch (error) {
         return callback(new Error('invalid CommonMark form'))
       }
