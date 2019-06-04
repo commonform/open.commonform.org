@@ -1,4 +1,5 @@
 var AJV = require('ajv')
+var URL = require('url')
 var concat = require('./concat')
 var critique = require('commonform-critique')
 var lint = require('commonform-lint')
@@ -40,6 +41,12 @@ module.exports = function (request, response) {
       }
     })
   } else {
+    var parsed = URL.parse(request.url, false)
+    if (parsed.pathname === '/robots.txt') {
+      response.setHeader('Content-Type', 'text/plain; charset=us-ascii')
+      response.end('User-agent: *\nDisallow: /\n')
+      return
+    }
     // Redirect to GitHub repository.
     response.statusCode = 302
     var repo = 'https://github.com/commonform/open.commonform.org'
