@@ -19,7 +19,11 @@ module.exports = {
   },
 
   docx: function (form, blanks, options, callback) {
-    var rendered = docx(form, blanks, options)
+    try {
+      var rendered = docx(form, blanks, options)
+    } catch (error) {
+      return callback(error)
+    }
     return rendered
       .generateAsync({ type: 'nodebuffer' })
       .catch(callback)
