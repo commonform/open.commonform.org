@@ -1,11 +1,10 @@
 var AJV = require('ajv')
 var URL = require('url')
-var commonmark = require('commonform-commonmark')
 var concat = require('./concat')
 var critique = require('commonform-critique')
 var lint = require('commonform-lint')
 var numberings = require('./numberings')
-var parseMarkup = require('commonform-markup-parse')
+var parseForm = require('./parse-form')
 var renderers = require('./renderers')
 
 var ajv = new AJV()
@@ -56,7 +55,7 @@ module.exports = function (request, response) {
 
   // Handler form render requests.
   function handleRender (request, response) {
-    parseForm(request, function (error, form, directions) {
+    parseForm(request.form, function (error, form, directions) {
       if (error) return clientError(error)
 
       // Validate renderer.
@@ -125,7 +124,7 @@ module.exports = function (request, response) {
   }
 
   function serveResults (compute, request, response) {
-    parseForm(request, function (error, form) {
+    parseForm(request.form, function (error, form) {
       if (error) return clientError(error)
       try {
         var results = compute(form)
@@ -136,35 +135,6 @@ module.exports = function (request, response) {
       response.statusCode = 200
       response.end(JSON.stringify(results))
     })
-  }
-
-  function parseForm (request, callback) {
-    var formData = request.form.data
-    var format = request.form.format
-    var parsed
-    /* istanbul ignore else */
-    if (format === 'json') {
-      try {
-        var form = JSON.parse(formData)
-      } catch (error) {
-        return callback(new Error('invalid form JSON'))
-      }
-      return callback(null, form)
-    } else if (format === 'markup') {
-      try {
-        parsed = parseMarkup(formData)
-      } catch (error) {
-        return callback(new Error('invalid form markup'))
-      }
-      return callback(null, parsed.form, parsed.directions)
-    } else if (format === 'commonmark') {
-      try {
-        parsed = commonmark.parse(formData)
-      } catch (error) {
-        return callback(new Error('invalid CommonMark form'))
-      }
-      return callback(null, parsed.form, parsed.directions)
-    }
   }
 
   /* istanbul ignore next */
