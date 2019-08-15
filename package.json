@@ -13,7 +13,7 @@
     "commonform-lint": "^3.0.2",
     "commonform-markdown": "^1.2.3",
     "commonform-markup-parse": "^1.1.0",
-    "commonform-validate": "^1.0.1",
+    "commonform-validate": "^2.0.0",
     "decimal-numbering": "^3.0.2",
     "ooxml-signature-pages": "^3.0.2",
     "outline-numbering": "^2.0.0",
