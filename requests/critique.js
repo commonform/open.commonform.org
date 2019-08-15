@@ -4,5 +4,5 @@ module.exports = {
     action: { const: 'critique' },
     form: require('./form')
   },
-  required: [ 'action', 'form' ]
+  required: ['action', 'form']
 }

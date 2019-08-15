@@ -1,10 +1,11 @@
 var AJV = require('ajv')
-var URL = require('url')
 var concat = require('./concat')
 var critique = require('commonform-critique')
+var has = require('has')
 var lint = require('commonform-lint')
 var numberings = require('./numberings')
 var parseForm = require('./parse-form')
+var parseURL = require('url-parse')
 var renderers = require('./renderers')
 
 var ajv = new AJV()
@@ -40,7 +41,7 @@ module.exports = function (request, response) {
       }
     })
   } else {
-    var parsed = URL.parse(request.url, false)
+    var parsed = parseURL(request.url, false)
     if (parsed.pathname === '/robots.txt') {
       response.setHeader('Content-Type', 'text/plain; charset=us-ascii')
       response.end('User-agent: *\nDisallow: /\n')
@@ -95,7 +96,7 @@ module.exports = function (request, response) {
       // Process numbering.
       var numbering = request.numbering
       if (numbering) {
-        if (!numberings.hasOwnProperty(numbering)) {
+        if (!has(numberings, numbering)) {
           return clientError('unknown numbering')
         }
         options.numbering = numberings[numbering]

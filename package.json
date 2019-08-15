@@ -15,10 +15,12 @@
     "commonform-markup-parse": "^1.1.0",
     "commonform-validate": "^2.0.0",
     "decimal-numbering": "^3.0.2",
+    "has": "^1.0.3",
     "ooxml-signature-pages": "^3.0.2",
     "outline-numbering": "^2.0.0",
     "pino": "^5.13.2",
-    "pino-http": "^4.2.0"
+    "pino-http": "^4.2.0",
+    "url-parse": "^1.4.7"
   },
   "devDependencies": {
     "nyc": "^14.1.1",

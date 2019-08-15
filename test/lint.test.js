@@ -9,7 +9,7 @@ tape('broken reference', function (test) {
     form: {
       format: 'json',
       data: JSON.stringify({
-        content: [ { reference: 'Indemnity' } ]
+        content: [{ reference: 'Indemnity' }]
       })
     }
   }

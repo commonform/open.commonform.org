@@ -4,7 +4,7 @@ module.exports = {
   properties: {
     format: {
       title: 'form data format',
-      enum: [ 'commonmark', 'json', 'markup' ]
+      enum: ['commonmark', 'json', 'markup']
     },
     data: {
       title: 'form data',

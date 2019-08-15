@@ -14,7 +14,7 @@ tape('critique archaism', function (test) {
   var result = {
     message: 'The phrase "to wit" is archaic.',
     level: 'info',
-    path: [ 'content', 0 ],
+    path: ['content', 0],
     source: 'commonform-archaic',
     url: null
   }

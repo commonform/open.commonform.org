@@ -3,10 +3,10 @@ module.exports = {
   properties: {
     action: { const: 'render' },
     format: {
-      enum: [ 'docx', 'html', 'html5', 'markdown' ]
+      enum: ['docx', 'html', 'html5', 'markdown']
     },
     form: require('./form'),
-    numbering: { enum: [ 'decimal', 'outline' ] },
+    numbering: { enum: ['decimal', 'outline'] },
     directions: { type: 'array' },
     blanks: {
       oneOf: [
@@ -20,5 +20,5 @@ module.exports = {
       type: 'string'
     }
   },
-  required: [ 'action', 'form' ]
+  required: ['action', 'form']
 }
