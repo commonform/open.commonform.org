@@ -26,7 +26,7 @@
     "nyc": "^14.1.1",
     "reformat-json-files": "^1.0.1",
     "simple-concat": "^1.0.0",
-    "standard": "^14.1.0",
+    "standard": "^14.3.0",
     "tape": "^4.11.0"
   },
   "scripts": {
