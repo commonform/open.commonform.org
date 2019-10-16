@@ -18,7 +18,7 @@
     "has": "^1.0.3",
     "ooxml-signature-pages": "^3.0.2",
     "outline-numbering": "^2.0.0",
-    "pino": "^5.13.3",
+    "pino": "^5.13.5",
     "pino-http": "^4.3.0",
     "url-parse": "^1.4.7"
   },
