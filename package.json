@@ -19,7 +19,7 @@
     "ooxml-signature-pages": "^3.0.2",
     "outline-numbering": "^2.0.0",
     "pino": "^6.2.0",
-    "pino-http": "^4.3.0",
+    "pino-http": "^5.0.0",
     "url-parse": "^1.4.7"
   },
   "devDependencies": {
