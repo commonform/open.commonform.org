@@ -27,7 +27,7 @@
     "reformat-json-files": "^1.0.1",
     "simple-concat": "^1.0.0",
     "standard": "^14.3.3",
-    "tape": "^4.11.0"
+    "tape": "^4.13.2"
   },
   "scripts": {
     "lint": "standard",
