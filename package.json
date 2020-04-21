@@ -5,7 +5,7 @@
   "repository": "commonform/open.commonform.org",
   "license": "BlueOak-1.0.0",
   "dependencies": {
-    "ajv": "^6.10.2",
+    "ajv": "^6.12.2",
     "commonform-commonmark": "^5.2.0",
     "commonform-critique": "^1.0.3",
     "commonform-docx": "^5.0.3",
